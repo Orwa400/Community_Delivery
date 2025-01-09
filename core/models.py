@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
 
 
 class Profile(models.Model):
@@ -67,3 +69,16 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"{self.stars}, stars for {self.user.username} by {self.given_by.username}"
+
+@receiver(user_logged_in)
+def set_user_online(sender, request, user, **kwargs):
+    if hasattr(user, 'profile'):
+        user.profile.is_online = True
+        user.profile.save()
+
+
+@receiver(user_logged_out)
+def ste_user_offline(sender, request, user, **kwargs):
+    if hasattr(user, 'profile'):
+        user.profile.is_online = False
+        user.profile.save()
