@@ -4,4 +4,4 @@ from .models import Store
 class StoreForm(forms.ModelForm):
     class Meta:
         model =Store
-        fields = ['name', 'address', 'contact_number']
+        fields = ['name', 'location', 'owner', 'description']

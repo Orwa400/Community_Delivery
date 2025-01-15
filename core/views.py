@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Store
-from django.http import  HttpResponseRedirect
+from django.http import  HttpResponseRedirect, HttpResponse
 from .forms import StoreForm
+
+def home(request):
+    return HttpResponse('<h1>Welcome to the Community Delivery App</h1>')
 
 def store_list(request):
     stores = Store.objects.all()
