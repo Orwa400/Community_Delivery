@@ -4,8 +4,8 @@ from django.http import  HttpResponseRedirect, HttpResponse
 from .forms import StoreForm
 
 def home(request):
-    return HttpResponse('<h1>Welcome to the Community Delivery App</h1>')
-
+    return render(request, 'core/home.html')
+   
 def store_list(request):
     stores = Store.objects.all()
     return render(request, 'core/store_list.html', {'stores': stores})
