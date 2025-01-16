@@ -4,7 +4,7 @@ from django.http import  HttpResponseRedirect, HttpResponse
 from .forms import StoreForm
 
 def home(request):
-    return render(request, 'core/home.html')
+    return render(request, 'home.html')
    
 def store_list(request):
     stores = Store.objects.all()
