@@ -1,0 +1,14 @@
+{%% extends 'base.html'}
+
+(% block content %)
+<div class="container py-5">
+    <h1>{{ store.name }}</h1>
+    <p><strong>Address:</strong> {{ store.address }}</p>
+    <p><strong>Description:</strong>{{ store.description }}</p>
+    <a href="{% url 'store_update' store.id %}" class="btn btn-primary">Edit Store</a>
+    <form method="POST" action="{% url 'store-delete' store.id %} style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete Store</button>
+    </form>
+</div>
+{% endblock %}
