@@ -1,0 +1,12 @@
+{% extends 'base.html %}
+
+{% block content %}
+<div class="contsiner py-5">
+    <h1>{% if form.instance.pk %}Update Store{% else %}Create Store{% endif %}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+{%e endblock %}
