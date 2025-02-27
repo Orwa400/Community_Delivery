@@ -69,7 +69,14 @@ def signup_view(request):
             return redirect('/')
     else:
         form = UserCreationForm()
-        return render(request, 'core/signup.html', {'form': form})
+        return render(request, 'core/templates/signup.html', {'form': form})
+
+def about_view(request):
+    return render(request, 'core/templates/about.html')
+
+def contact_view(request):
+    return render(request, 'core/templates/contact.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -80,7 +87,7 @@ def login_view(request):
             return redirect('/')
     else:
         form = AuthenticationForm()
-        return render(request, 'core/login.html', {'form': form})
+        return render(request, 'core/templates/login.html', {'form': form})
 
 def logout_view(request):
     logout(request)

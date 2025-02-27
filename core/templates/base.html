@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,6 +40,11 @@
                     </ul>
                 </div>
             </div>
+            {% if user.is_authenticated %}
+                <a href="{%url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %} 
         </nav>
 
         <!-- Main content block -->
