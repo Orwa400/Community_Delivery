@@ -24,6 +24,16 @@ class Store(models.Model):
     def __str__(self):
         return self.name
 
+class FavoriteStore(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+
+    class MEta:
+        unique_together = ('user', 'store')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.store.name}"
+
 class InventoryItem(models.Model):
     store = models.ForeignKey(Store, related_name='inventory', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
