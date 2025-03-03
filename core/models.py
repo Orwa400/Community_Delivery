@@ -28,7 +28,7 @@ class FavoriteStore(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
 
-    class MEta:
+    class Meta:
         unique_together = ('user', 'store')
 
     def __str__(self):

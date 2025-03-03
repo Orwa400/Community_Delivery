@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Store
+from .models import Store, FavoriteStore
 from django.http import  HttpResponseRedirect, HttpResponse
 from .forms import StoreForm
 from django.contrib.auth import login, logout, authenticate 
@@ -92,3 +92,14 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+@login_required
+def add_favorite(request, store_id):
+    store = get_object_or_404(user=request.user, store=store)
+    return JsonResponse({'status': 'added'})
+
+@login_required
+def remove_favorite(request, store_id):
+    store = get_object_or_404(Store, id=store_id)
+    FavoriteStore.objects.filter(user=request.user, store=store).delete()
+    return JsonResponse({'status': 'removed'})
