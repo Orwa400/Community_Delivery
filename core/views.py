@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Store, FavoriteStore
-from django.http import  HttpResponseRedirect, HttpResponse
+from django.http import  HttpResponseRedirect, HttpResponse, JsonResponse
 from .forms import StoreForm
 from django.contrib.auth import login, logout, authenticate 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'home.html')
@@ -25,22 +26,23 @@ def store_create(request):
         form = StoreForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpREsponseRedirect('/stores/')
+            return HttpResponseRedirect('/stores/')
     else:
         form = StoreForm()
+
     return render(request, 'core/store_form.html', {'form': form})
 
 def store_update(request, pk):
     store = get_object_or_404(Store, pk=pk)
     if request.method == 'POST':
         form = StoreForm(request.POST, instance=store) # Bind form with current store data
-        if form_is.valid():
-            form.save
+        if form.is_valid():
+            form.save()
             return HttpResponseRedirect('/stores/')
         else:
             form = StoreForm(instance=store)  # Pre-fill the form with the current store data
 
-        return render(request, 'core/store_form.html', {'form': form})
+    return render(request, 'core/store_form.html', {'form': form})
 
 def store_delete(request, pk):
     store = get_object_or_404(Store, pk=pk)
@@ -48,7 +50,7 @@ def store_delete(request, pk):
         store.delete()
         return HttpResponseRedirect('/stores/')
     
-    return render(request, 'core/store_confirm_delete.html', context)
+    return render(request, 'core/store_confirm_delete.html', {'store': store})
 
 # API Views
 def store_list_api(request):
@@ -73,7 +75,8 @@ def signup_view(request):
             return redirect('/')
     else:
         form = UserCreationForm()
-        return render(request, 'core/templates/signup.html', {'form': form})
+        
+    return render(request, 'core/templates/signup.html', {'form': form})
 
 def about_view(request):
     return render(request, 'core/templates/about.html')
@@ -91,7 +94,7 @@ def login_view(request):
             return redirect('/')
     else:
         form = AuthenticationForm()
-        return render(request, 'core/templates/login.html', {'form': form})
+    return render(request, 'core/templates/login.html', {'form': form})
 
 def logout_view(request):
     logout(request)
@@ -99,7 +102,8 @@ def logout_view(request):
 
 @login_required
 def add_favorite(request, store_id):
-    store = get_object_or_404(user=request.user, store=store)
+    store = get_object_or_404(Store, id=store_id),
+    FavoriteStore.objects.get_or_create(user=request.user, store=store)
     return JsonResponse({'status': 'added'})
 
 @login_required
