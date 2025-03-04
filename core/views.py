@@ -10,7 +10,11 @@ def home(request):
    
 def store_list(request):
     stores = Store.objects.all()
-    return render(request, 'core/store_list.html', {'stores': stores})
+    favorite_stores = []
+    if request.user.is_authenticated:
+        favorite_stores = Store.objects.filter(favoritestore__user=request.user)
+
+    return render(request, 'store_list.html', {'stores': stores, 'favorite_stores': favorite_stores})
 
 def store_detail(request,pk):
     store = get_object_or_404(Store, pk=pk)
